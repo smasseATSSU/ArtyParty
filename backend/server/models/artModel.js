@@ -5,6 +5,10 @@ const artSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  artistName: {
+    type: String,
+    required: true
+  },
   artType: {
     type: String,
     required: true

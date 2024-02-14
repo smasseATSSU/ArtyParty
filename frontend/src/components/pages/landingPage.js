@@ -33,8 +33,7 @@ const LandingPage = () => {
           <Card.Body>
             <Card.Title>{pieceOfArtwork.title}</Card.Title>
             <Card.Text>Artist: {pieceOfArtwork.artistName}</Card.Text>
-            <Button variant="primary" onClick={handleLogout}>Logout</Button>
-          </Card.Body>
+           </Card.Body>
         </Card>
       ))}
     </div>

@@ -4,7 +4,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import ReactNavbar from 'react-bootstrap/Navbar';
 
-
 // Here, we display our Navbar
 export default function Navbar() {
   // We are pulling in the user's info but not using it for now.
@@ -23,10 +22,12 @@ export default function Navbar() {
     <ReactNavbar style={{ backgroundColor: '#ffc7a1' }} variant="dark">
       <Container>
         <Nav className="me-auto">
-          <Nav.Link style={{ color: '#3b719f' }} href="/start">Start</Nav.Link>
+        <Nav.Link style={{ color: '#3b719f' }} href="/start">Start </Nav.Link>
           <Nav.Link style={{ color: '#3b719f' }} href="/home">Home</Nav.Link>
           <Nav.Link style={{ color: '#3b719f' }} href="/landingPage">Landing Page</Nav.Link>
           <Nav.Link style={{ color: '#3b719f' }} href="/privateUserProfile">Profile</Nav.Link>
+        </Nav>
+        <Nav>
           <Nav.Link style={{ color: '#3b719f' }} href="/login">Login</Nav.Link>
         </Nav>
       </Container>

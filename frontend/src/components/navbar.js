@@ -25,8 +25,9 @@ export default function Navbar() {
         <Nav className="me-auto">
           <Nav.Link style={{ color: '#3b719f' }} href="/start">Start</Nav.Link>
           <Nav.Link style={{ color: '#3b719f' }} href="/home">Home</Nav.Link>
-          <Nav.Link style={{ color: '#3b719f' }} href="/landingPage">Full Artwork Gallery</Nav.Link>
+          <Nav.Link style={{ color: '#3b719f' }} href="/landingPage">Landing Page</Nav.Link>
           <Nav.Link style={{ color: '#3b719f' }} href="/privateUserProfile">Profile</Nav.Link>
+          <Nav.Link style={{ color: '#3b719f' }} href="/login">Login</Nav.Link>
         </Nav>
       </Container>
     </ReactNavbar>

@@ -23,8 +23,8 @@ export default function Navbar() {
       <Container>
         <Nav className="me-auto">
         <Nav.Link style={{ color: '#3b719f' }} href="/start">Start </Nav.Link>
+        <Nav.Link style={{ color: '#3b719f' }} href="/landingPage">Full Gallery</Nav.Link>
           <Nav.Link style={{ color: '#3b719f' }} href="/home">Home</Nav.Link>
-          <Nav.Link style={{ color: '#3b719f' }} href="/landingPage">Landing Page</Nav.Link>
           <Nav.Link style={{ color: '#3b719f' }} href="/privateUserProfile">Profile</Nav.Link>
         </Nav>
         <Nav>

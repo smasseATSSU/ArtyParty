@@ -1,34 +1,82 @@
-import React, { useEffect, useState } from "react";
-import getUserInfo from '../utilities/decodeJwt';
+import React from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import ReactNavbar from 'react-bootstrap/Navbar';
 
-// Here, we display our Navbar
-export default function Navbar() {
-  // We are pulling in the user's info but not using it for now.
-  // Warning disabled: 
-  // eslint-disable-next-line
-  const [user, setUser] = useState({})
 
-  useEffect(() => {
-    setUser(getUserInfo())
-  }, [])
-  
-  // if (!user) return null   - for now, let's show the bar even not logged in.
-  // we have an issue with getUserInfo() returning null after a few minutes
-  // it seems.
+export default function Navbar() {
+
+  const linkStyle = {
+    color: '#fff',
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    marginLeft: '20px',
+    textDecoration: 'none', // Remove default underline
+    transition: 'text-decoration 0.3s', // Smooth transition for underline
+  };
+
+  const hoverStyle = {
+    textDecoration: 'underline', // Add underline on hover
+  };
+
   return (
-    <ReactNavbar style={{ backgroundColor: '#ffc7a1' }} variant="dark">
+    <ReactNavbar style={{ backgroundColor: '#f57f5b' }} variant="dark">
       <Container>
-        <Nav className="me-auto">
-        <Nav.Link style={{ color: '#3b719f' }} href="/start">Start </Nav.Link>
-          <Nav.Link style={{ color: '#3b719f' }} href="/home">Home</Nav.Link>
-          <Nav.Link style={{ color: '#3b719f' }} href="/landingPage">Landing Page</Nav.Link>
-          <Nav.Link style={{ color: '#3b719f' }} href="/privateUserProfile">Profile</Nav.Link>
+
+        <Nav className="me-auto align-items-center">
+          <Nav.Link className="nav-link" href="/start">
+            <img 
+              src="https://artypartybucket.s3.amazonaws.com/clickable+images/paint-palette.png" 
+              alt="Start" 
+              style={{ 
+                width: '80px',
+                height: '80px',
+              }} 
+            />
+          </Nav.Link>
+
+          <Nav.Link 
+            className="nav-link" 
+            style={linkStyle}
+            href="/home" 
+            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'} // Apply underline on hover
+            onMouseLeave={(e) => e.target.style.textDecoration = 'none'} // Remove underline on mouse leave
+          >
+            Home
+          </Nav.Link>
+
+          <Nav.Link 
+            className="nav-link" 
+            style={linkStyle}
+            href="/landingpage" 
+            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+          >
+            Full Gallery
+          </Nav.Link>
+        
         </Nav>
         <Nav>
-          <Nav.Link style={{ color: '#3b719f' }} href="/login">Login</Nav.Link>
+        <Nav.Link 
+            className="nav-link" 
+            style={linkStyle}
+            href="/privateUserProfile" 
+            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+          >
+            Profile
+          </Nav.Link>
+          
+          <Nav.Link 
+            className="nav-link" 
+            style={linkStyle}
+            href="/login" 
+            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+          >
+            Login
+          </Nav.Link>
+          
         </Nav>
       </Container>
     </ReactNavbar>

@@ -76,9 +76,9 @@ export default function Navbar() {
           >
             Login
           </Nav.Link>
-          
         </Nav>
       </Container>
     </ReactNavbar>
+    
   );
 }

@@ -14,7 +14,10 @@ const artistSchema = new mongoose.Schema({
     type: String,
     required: true
   }
-});
+}
+,
+{ collection: "artistModel" }
+);
 
 const artistModel = mongoose.model('Artist', artistSchema);
 

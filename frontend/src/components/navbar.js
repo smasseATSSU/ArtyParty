@@ -24,7 +24,7 @@ export default function Navbar() {
       <Container>
 
         <Nav className="me-auto align-items-center">
-          <Nav.Link className="nav-link" href="/start">
+          <Nav.Link className="nav-link" href="/home">
             <img 
               src="https://artypartybucket.s3.amazonaws.com/clickable+images/paint-palette.png" 
               alt="Start" 
@@ -38,21 +38,21 @@ export default function Navbar() {
           <Nav.Link 
             className="nav-link" 
             style={linkStyle}
-            href="/home" 
-            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'} // Apply underline on hover
-            onMouseLeave={(e) => e.target.style.textDecoration = 'none'} // Remove underline on mouse leave
-          >
-            Home
-          </Nav.Link>
-
-          <Nav.Link 
-            className="nav-link" 
-            style={linkStyle}
             href="/landingpage" 
             onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
             onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
           >
             Full Gallery
+          </Nav.Link>
+
+          <Nav.Link 
+            className="nav-link" 
+            style={linkStyle}
+            href="/artistsPage" 
+            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+          >
+            Meet the Artists 
           </Nav.Link>
         
         </Nav>
@@ -79,6 +79,5 @@ export default function Navbar() {
         </Nav>
       </Container>
     </ReactNavbar>
-    
   );
 }

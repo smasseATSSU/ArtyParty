@@ -14,6 +14,15 @@ const artistSchema = new mongoose.Schema({
     type: String,
     required: true
   }
+  ,
+  imageURI: {
+    type: String,
+    required: true
+  },
+  typeOfArt: {
+    type: String,
+    required: true
+  }
 }
 ,
 { collection: "artistModel" }

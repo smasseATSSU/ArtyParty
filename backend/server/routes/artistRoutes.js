@@ -39,6 +39,12 @@ router.put('/artist/:id', getArtist, async (req, res) => {
     if (req.body.biography != null) {
       res.artist.biography = req.body.biography;
     }
+    if (req.body.imageURI != null) {
+      res.artist.imageURI = req.body.imageURI;
+    }
+    if (req.body.typeOfArt != null) {
+      res.artist.typeOfArt = req.body.typeOfArt;
+    }
     const updatedArtist = await res.artist.save();
     res.json(updatedArtist);
   } catch (err) {

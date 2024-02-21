@@ -33,14 +33,14 @@ const ArtistsPage = () => {
                 <div
                   style={{
                     height: '200px',
-                    backgroundImage: `url('https://artypartybucket.s3.amazonaws.com/gallery.jpg')`,
+                    backgroundImage: `url('${artist.imageURI}')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
                 ></div>
                 <Card.Body>
                   <Card.Title>{artist.artistName}</Card.Title>
-                  <Card.Text>{artist.biography}</Card.Text>
+                  <Card.Title>{artist.typeOfArt}</Card.Title>
                   <Link to={`/artist/${artist._id}`}>
                     <Button variant="primary">View Artist</Button>
                   </Link>

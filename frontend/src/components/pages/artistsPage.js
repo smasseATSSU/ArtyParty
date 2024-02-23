@@ -23,6 +23,16 @@ const ArtistsPage = () => {
     fetchArtists();
   }, []);
 
+  const linkStyle = {
+    color: '#000',
+    textDecoration: 'none',
+    transition: 'text-decoration 0.3s',
+  };
+
+  const hoverStyle = {
+    textDecoration: 'underline',
+  };
+
   return (
     <div style={{ backgroundColor: '#faca78', minHeight: '100vh', padding: '20px' }}>
       <Container>
@@ -41,8 +51,13 @@ const ArtistsPage = () => {
                 <Card.Body>
                   <Card.Title>{artist.artistName}</Card.Title>
                   <Card.Title>{artist.typeOfArt}</Card.Title>
-                  <Link to={`/artist/${artist._id}`}>
-                    <Button variant="primary">View Artist</Button>
+                  <Link
+                    to={`/artist/${artist._id}`}
+                    style={linkStyle}
+                    onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                    onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                  >
+                    <Button variant="primary" style={{ backgroundColor: '#f57f5b', borderColor: '#ffc7a1', borderRadius: '3', padding: '10px 30px', fontSize: '1.2rem', fontWeight: 'bold', textDecoration: 'none' }}>View Artist</Button>
                   </Link>
                 </Card.Body>
               </Card>

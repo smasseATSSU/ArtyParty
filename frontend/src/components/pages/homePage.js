@@ -1,11 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Footer from '../Footer';
+import axios from 'axios';
 
 const HomePage = () => {
+  const [featuredArtworks, setFeaturedArtworks] = useState([]);
+  const [landingArtworks, setLandingArtworks] = useState([]);
+
+  useEffect(() => {
+    async function fetchFeaturedArtworks() {
+      try {
+        const response = await axios.get('http://localhost:8081/art/featured');
+        setFeaturedArtworks(response.data);
+      } catch (error) {
+        console.error('Error fetching featured artworks:', error);
+      }
+    }
+    fetchFeaturedArtworks();
+  }, []);
+
+  useEffect(() => {
+    async function fetchLandingArtworks() {
+      try {
+        const response = await axios.get('http://localhost:8081/art/artwork');
+        setLandingArtworks(response.data);
+      } catch (error) {
+        console.error('Error fetching landing artworks:', error);
+      }
+    }
+    fetchLandingArtworks();
+  }, []);
+
+  // Function to shuffle array
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  // Shuffle the landing artworks
+  const shuffledLandingArtworks = shuffleArray(landingArtworks);
+
   return (
     <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
       {/* Title Bar */}
@@ -52,8 +93,8 @@ const HomePage = () => {
       <Container>
         <Row className="mt-5 justify-content-center">
           <Col md={8} className="text-center">
-            <p style={{ fontSize: '1.2rem', marginBottom: '20px' }}>Discover a world of creativity and inspiration.</p>
-            <p style={{ fontSize: '1.2rem', marginBottom: '40px' }}>Join us in celebrating the diverse talents of our community.</p>
+            <p style={{ fontSize: '1.2rem', marginBottom: '20px' }}>Join the Salem State community in appreciating the arts</p>
+            <p style={{ fontSize: '1.2rem', marginBottom: '40px' }}>Discover the "Salem State Difference"</p>
             <Link to="/landingPage">
               <Button
                 variant="primary"
@@ -78,17 +119,30 @@ const HomePage = () => {
           <Col md={6}>
             <div className="featured-section">
               <h2 className="text-center">Featured Artworks</h2>
-              {/* Add featured artworks here */}
-            </div>
-          </Col>
-          <Col md={6}>
-            <div className="upcoming-events">
-              <h2 className="text-center">Upcoming Events</h2>
-              {/* Add upcoming events here */}
+              {featuredArtworks.map((artwork) => (
+                <div key={artwork._id}>
+                  <h3>{artwork.title}</h3>
+                  <img src={artwork.imageURI} alt={artwork.title} style={{ maxWidth: '100%', maxHeight: '200px', marginBottom: '10px' }} />
+                  <p>{artwork.artistName}</p>
+                </div>
+              ))}
             </div>
           </Col>
         </Row>
+        {/* Display three shuffled artworks from landing page */}
+        <Row className="mt-5 justify-content-center">
+          {shuffledLandingArtworks.slice(0, 3).map((artwork) => (
+            <Col key={artwork._id} xs={12} sm={6} md={4} lg={3} xl={3} className="mb-4">
+              <div>
+                <h3>{artwork.title}</h3>
+                <img src={artwork.imageURI} alt={artwork.title} style={{ maxWidth: '100%', maxHeight: '200px', marginBottom: '10px' }} />
+                <p>{artwork.artistName}</p>
+              </div>
+            </Col>
+          ))}
+        </Row>
       </Container>
+      <Footer />
     </div>
   );
 };

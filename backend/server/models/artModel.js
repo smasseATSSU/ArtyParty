@@ -28,6 +28,10 @@ const artSchema = new mongoose.Schema({
   imageURI: {
     type: String,
     required: false
+  },
+  artistId: {
+    type: String,
+    required: true
   }
 });
 

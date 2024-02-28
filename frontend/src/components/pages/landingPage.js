@@ -22,16 +22,6 @@ const LandingPage = () => {
     fetchArtworks();
   }, []);
 
-  const linkStyle = {
-    color: '#000', // Change the color to black
-    textDecoration: 'none', // Remove default underline
-    transition: 'text-decoration 0.3s', // Smooth transition for underline
-  };
-
-  const hoverStyle = {
-    textDecoration: 'underline', // Add underline on hover
-  };
-
   return (
     <div style={{ backgroundColor: '#faca78', minHeight: '100vh' }}>
       <div style={{ height: '20px', backgroundColor: '#faca78' }}></div>
@@ -42,18 +32,21 @@ const LandingPage = () => {
               <Card style={{ width: '100%' }}>
                 <Card.Img variant="top" src={pieceOfArtwork.imageURI} />
                 <Card.Body>
-                  <Card.Title>
-                    {/* Use Link to create dynamic link to artist's page */}
-                    <Link
+                  <h5 style={{ marginBottom: '10px' }}>
+                    {/* Render the title without the Link */}
+                    {pieceOfArtwork.title}
+                  </h5>
+                  <Card.Text>
+                    {/* Make only the artist name a Link */}
+                    Artist: <Link
                       to={`/artist/${pieceOfArtwork.artistId}`}
-                      style={linkStyle}
+                      style={{ color: '#000', textDecoration: 'none', transition: 'text-decoration 0.3s' }}
                       onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
                       onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
                     >
                       {pieceOfArtwork.artistName}
                     </Link>
-                  </Card.Title>
-                  <Card.Text>Artist: {pieceOfArtwork.artistName}</Card.Text>
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>

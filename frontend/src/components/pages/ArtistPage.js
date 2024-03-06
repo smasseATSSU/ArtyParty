@@ -53,7 +53,7 @@ const ArtistPage = () => {
               <Card.Body>
                 <Card.Title>Details</Card.Title>
                 <Card.Text>
-                  <p><strong>Town:</strong> {artist.town}</p>
+                  <p><strong>Town:</strong> {artist.Town}</p>
                   <p><strong>Type of Art:</strong> {artist.typeOfArt}</p>
                   {/* Add additional artist details here */}
                 </Card.Text>

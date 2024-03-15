@@ -1,143 +1,129 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import getUserInfo from "../../utilities/decodeJwt";
-
-const PRIMARY_COLOR = "#cc5c99";
-const SECONDARY_COLOR = '#0c0c1f'
-const url = "http://localhost:8081/user/login";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Footer from '../Footer';
+import axios from 'axios';
 
 const Login = () => {
-  const [user, setUser] = useState(null)
+  const [featuredArtworks, setFeaturedArtworks] = useState([]);
+  const [landingArtworks, setLandingArtworks] = useState([]);
+  const [user, setUser] = useState(null);
   const [data, setData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [light, setLight] = useState(false);
-  const [bgColor, setBgColor] = useState(SECONDARY_COLOR);
-  const [bgText, setBgText] = useState('Light Mode')
-  const navigate = useNavigate();
-
-  let labelStyling = {
-    color: PRIMARY_COLOR,
-    fontWeight: "bold",
-    textDecoration: "none",
-  };
-  let backgroundStyling = { background: bgColor };
-  let buttonStyling = {
-    background: PRIMARY_COLOR,
-    borderStyle: "none",
-    color: bgColor,
-  };
-
-  const handleChange = ({ currentTarget: input }) => {
-    setData({ ...data, [input.name]: input.value });
-  };
+  const [bgColor, setBgColor] = useState('#f8f9fa');
 
   useEffect(() => {
-
-    const obj = getUserInfo(user)
-    setUser(obj)
-
-    if (light) {
-      setBgColor("white");
-      setBgText('Dark mode')
-    } else {
-      setBgColor(SECONDARY_COLOR);
-      setBgText('Light mode')
+    async function fetchFeaturedArtworks() {
+      try {
+        const response = await axios.get('http://localhost:8081/art/featured');
+        setFeaturedArtworks(response.data);
+      } catch (error) {
+        console.error('Error fetching featured artworks:', error);
+      }
     }
-  }, [light]);
+    fetchFeaturedArtworks();
+  }, []);
+
+  useEffect(() => {
+    async function fetchLandingArtworks() {
+      try {
+        const response = await axios.get('http://localhost:8081/art/artwork');
+        setLandingArtworks(response.data);
+      } catch (error) {
+        console.error('Error fetching landing artworks:', error);
+      }
+    }
+    fetchLandingArtworks();
+  }, []);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const loggedInUser = localStorage.getItem("accessToken");
+    if (loggedInUser) {
+      setUser(loggedInUser);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    // Clear user data from local storage
+    localStorage.removeItem("accessToken");
+    setUser(null);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data: res } = await axios.post(url, data);
-      const { accessToken } = res;
-      //store token in localStorage
+      const response = await axios.post("http://localhost:8081/user/login", data);
+      const { accessToken } = response.data;
+      // Store token in local storage
       localStorage.setItem("accessToken", accessToken);
-      navigate("/home");
+      setUser(accessToken);
     } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError(error.response.data.message);
-      }
+      setError("Invalid username or password");
     }
   };
 
-  if(user) {
-    navigate('/privateUserProfile')
-    return
-  }
+  // Function to shuffle array
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  // Shuffle the landing artworks
+  const shuffledLandingArtworks = shuffleArray(landingArtworks);
 
   return (
-    <>
-      <section className="vh-100">
-        <div className="container-fluid h-custom vh-100">
-          <div
-            className="row d-flex justify-content-center align-items-center h-100 "
-            style={backgroundStyling}>
-            <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-              <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label style={labelStyling}>Username</Form.Label>
-                  <Form.Control
-                    type="username"
-                    name="username"
-                    onChange={handleChange}
-                    placeholder="Enter username"
-                  />
-                  <Form.Text className="text-muted">
-                    We just might sell your data
-                  </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label style={labelStyling}>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                  <Form.Text className="text-muted pt-1">
-                    Dont have an account?
-                    <span>
-                      <Link to="/signup" style={labelStyling}> Sign up
-                      </Link>
-                    </span>
-                  </Form.Text>
-                </Form.Group>
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="flexSwitchCheckDefault"
-                    onChange={() => { setLight(!light) }}
-                  />
-                  <label class="form-check-label" for="flexSwitchCheckDefault" className='text-muted'>
-                    {bgText}
-                  </label>
-                </div>
-                {error && <div style={labelStyling} className='pt-3'>{error}</div>}
-                <Button
-                  variant="primary"
-                  type="submit"
-                  onClick={handleSubmit}
-                  style={buttonStyling}
-                  className='mt-2'
-                >
-                  Log In
-                </Button>
-              </Form>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+    <div style={{ backgroundColor: bgColor, minHeight: '100vh', paddingBottom: '100px' }}>
+      <Container style={{ paddingTop: '20px' }}>
+        <Row className="justify-content-center mt-5">
+          <Col xs={12} md={6} lg={4}>
+            <form onSubmit={handleSubmit}>
+              <h2 className="text-center mb-4">Login</h2>
+              {error && <div className="alert alert-danger">{error}</div>}
+              <div className="mb-3">
+                <label htmlFor="username" className="form-label">Username</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  id="username" 
+                  name="username" 
+                  value={data.username} 
+                  onChange={(e) => setData({ ...data, username: e.target.value })} 
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Password</label>
+                <input 
+                  type="password" 
+                  className="form-control" 
+                  id="password" 
+                  name="password" 
+                  value={data.password} 
+                  onChange={(e) => setData({ ...data, password: e.target.value })} 
+                />
+              </div>
+              <div className="text-center">
+                <button type="submit" className="btn btn-primary">Login</button>
+              </div>
+            </form>
+            {user && (
+              <div className="text-center mt-3">
+                <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+              </div>
+            )}
+          </Col>
+        </Row>
+      
+      </Container>
+      <Footer style={{ position: 'fixed', bottom: '0', width: '100%' }} />
+    </div>
   );
 };
 

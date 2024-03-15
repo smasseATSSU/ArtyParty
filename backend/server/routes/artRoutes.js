@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const artModel = require('../models/artModel'); // Assuming artModel is defined in a separate file
+const artModel = require('../models/artModel'); 
 
 // CREATE - Create a new artwork
 router.post('/artwork', async (req, res) => {

@@ -13,6 +13,7 @@ import { createContext, useState, useEffect } from "react";
 import getUserInfo from "./utilities/decodeJwt";
 import ArtistsPage from "./components/pages/artistsPage";
 import ArtistPage from "./components/pages/ArtistPage";
+import AdminPostPage from "./components/pages/adminPostPage";
 
 
 export const UserContext = createContext();
@@ -31,13 +32,14 @@ const App = () => {
       <UserContext.Provider value={user}>
       <Routes>
         <Route exact path="/home" element={<HomePage />} />
-        <Route exact path="/" element={<LandingPage />} />
+        <Route exact path="/" element={<HomePage />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
         <Route path="/privateUserProfile" element={<PrivateUserProfile />} />
         <Route exact path="/landingPage" element={<LandingPage />} />
         <Route exact path="/artistsPage" element={<ArtistsPage />} />
         <Route path="/artist/:artistId" element={<ArtistPage />} />
+        <Route path="/adminPostPage" element={<AdminPostPage />} />
       </Routes>
 
       </UserContext.Provider>

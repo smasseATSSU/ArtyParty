@@ -27,6 +27,20 @@ router.get('/artist/:id', getArtist, (req, res) => {
   res.json(res.artist);
 });
 
+router.get('/artistByName/:name', async (req, res) => {
+  try {
+    const name = req.params.name;
+    const artist = await artistModel.findOne({ artistName: name });
+    if (!artist) {
+      return res.status(404).json({ message: 'Artist not found' });
+    }
+    res.json(artist);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 // UPDATE - Update a specific artist
 router.put('/artist/:id', getArtist, async (req, res) => {
   try {

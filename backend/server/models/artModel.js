@@ -11,7 +11,7 @@ const artSchema = new mongoose.Schema({
   },
   artType: {
     type: String,
-    required: true
+    required: false
   },
   description: {
     type: String,
@@ -19,7 +19,7 @@ const artSchema = new mongoose.Schema({
   },
   dateMade: {
     type: Date,
-    required: true
+    required: false
   },
   keywords: {
     type: [String],
@@ -27,11 +27,11 @@ const artSchema = new mongoose.Schema({
   },
   imageURI: {
     type: String,
-    required: false
+    required: true
   },
   artistId: {
     type: String,
-    required: true
+    required: false
   }
 });
 

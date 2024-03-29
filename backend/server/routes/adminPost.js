@@ -3,6 +3,7 @@ const router = express.Router();
 const ArtWork = require('../models/artModel');
 
 // POST route for creating artwork
+
 router.post('/artwork', async (req, res) => {
   try {
     const { title, artistName, description, imageURI } = req.body;

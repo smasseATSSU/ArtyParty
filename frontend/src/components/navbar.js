@@ -9,18 +9,15 @@ export default function Navbar() {
   const linkStyle = {
     color: '#fff',
     fontSize: '1.2rem',
-    fontWeight: 'bold',
+    fontWeight: 'normal', // Changed font weight to normal for a thinner font
+    fontFamily: 'Times New Roman', // Changed font family to Times New Roman
     marginLeft: '20px',
     textDecoration: 'none', // Remove default underline
     transition: 'text-decoration 0.3s', // Smooth transition for underline
   };
 
-  const hoverStyle = {
-    textDecoration: 'underline', // Add underline on hover
-  };
-
   return (
-    <ReactNavbar style={{ backgroundColor: '#f57f5b' }} variant="dark">
+    <ReactNavbar style={{ backgroundColor: '#f57f5b', paddingBottom: '5px', paddingTop: '5px', height: '50px' }} variant="dark">
       <Container>
 
         <Nav className="me-auto align-items-center">
@@ -29,8 +26,8 @@ export default function Navbar() {
               src="https://artypartybucket.s3.amazonaws.com/clickable+images/paint-palette.png" 
               alt="Start" 
               style={{ 
-                width: '80px',
-                height: '80px',
+                width: '58px',
+                height: '58px',
               }} 
             />
           </Nav.Link>
@@ -43,6 +40,16 @@ export default function Navbar() {
             onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
           >
             Full Gallery
+          </Nav.Link>
+
+          <Nav.Link 
+            className="nav-link" 
+            style={linkStyle}
+            href="/adminPostPage" 
+            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+          >
+            Post
           </Nav.Link>
 
           <Nav.Link 

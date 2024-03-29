@@ -4,15 +4,17 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Modal from 'react-bootstrap/Modal'; // Import Modal component
-import Button from 'react-bootstrap/Button'; // Import Button component
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Footer from '../Footer';
+import { ResizableBox } from 'react-resizable';
+import Draggable from 'react-draggable';
 
 const LandingPage = () => {
   const [artworks, setArtworks] = useState([]);
-  const [selectedArtwork, setSelectedArtwork] = useState(null); // State to store the selected artwork
-  const [isZoomed, setIsZoomed] = useState(false); // State to track zoom status
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
     const fetchArtworks = async () => {
@@ -26,21 +28,26 @@ const LandingPage = () => {
     fetchArtworks();
   }, []);
 
-  // Function to handle opening the modal
   const handleOpenModal = (artwork) => {
     setSelectedArtwork(artwork);
-    setIsZoomed(false); // Reset zoom status when opening modal
+    setIsZoomed(false);
   };
 
-  // Function to handle closing the modal
   const handleCloseModal = () => {
     setSelectedArtwork(null);
-    setIsZoomed(false); // Reset zoom status when closing modal
+    setIsZoomed(false);
   };
 
-  // Function to handle toggling zoom
   const handleZoomToggle = () => {
     setIsZoomed(!isZoomed);
+  };
+
+  const handleDrag = (e, ui) => {
+    // Handle dragging logic here
+  };
+
+  const handleResize = (e, { size }) => {
+    // Handle resizing logic here
   };
 
   return (
@@ -56,12 +63,12 @@ const LandingPage = () => {
                     height: '250px',
                     overflow: 'hidden',
                     cursor: 'pointer',
-                    filter: 'brightness(100%)', // Default brightness
-                    transition: 'filter 0.3s', // Smooth transition
+                    filter: 'brightness(100%)',
+                    transition: 'filter 0.3s',
                   }}
-                  onMouseEnter={(e) => (e.target.style.filter = 'brightness(80%)')} // Darken on hover
-                  onMouseLeave={(e) => (e.target.style.filter = 'brightness(100%)')} // Restore brightness on hover out
-                  onClick={() => handleOpenModal(pieceOfArtwork)} // Open modal on click
+                  onMouseEnter={(e) => (e.target.style.filter = 'brightness(80%)')}
+                  onMouseLeave={(e) => (e.target.style.filter = 'brightness(100%)')}
+                  onClick={() => handleOpenModal(pieceOfArtwork)}
                 >
                   <Card.Img
                     variant="top"
@@ -93,21 +100,36 @@ const LandingPage = () => {
         </Row>
       </Container>
       <Footer />
-      {/* Modal for displaying the selected artwork */}
       <Modal show={!!selectedArtwork} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>{selectedArtwork && selectedArtwork.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <img
-            src={selectedArtwork && selectedArtwork.imageURI}
-            alt={selectedArtwork && selectedArtwork.title}
-            style={{ width: '100%', height: isZoomed ? 'auto' : '80vh' }} // Set height based on zoom status
-          />
+          <div style={{ width: '100%', height: isZoomed ? 'auto' : '80vh', textAlign: 'center' }}>
+            <Draggable onDrag={handleDrag}>
+              <ResizableBox
+                width={500}
+                height={300}
+                minConstraints={[100, 100]}
+                maxConstraints={[800, 800]}
+                onResize={handleResize}
+                draggableOpts={{ grid: [25, 25] }}
+              >
+                <img
+                  src={selectedArtwork && selectedArtwork.imageURI}
+                  alt={selectedArtwork && selectedArtwork.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              </ResizableBox>
+            </Draggable>
+          </div>
         </Modal.Body>
         <Modal.Footer>
-           <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="secondary" onClick={handleCloseModal}>
             Close
+          </Button>
+          <Button variant="secondary" onClick={handleZoomToggle}>
+            {isZoomed ? 'Zoom Out' : 'Zoom In'}
           </Button>
         </Modal.Footer>
       </Modal>

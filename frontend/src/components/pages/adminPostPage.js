@@ -48,6 +48,10 @@ const AdminPage = () => {
           <Form.Label>Image URI:</Form.Label>
           <Form.Control type="text" name="imageURI" value={formData.imageURI} onChange={handleChange} />
         </Form.Group>
+        <Form.Group className="mb-3" controlId="imageURI">
+          <Form.Label>artistId:</Form.Label>
+          <Form.Control type="text" name="artistId" value={formData.artistId} onChange={handleChange} />
+        </Form.Group>
         <Button variant="primary" type="submit">
           Submit
         </Button>

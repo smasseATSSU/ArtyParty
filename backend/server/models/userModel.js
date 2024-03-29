@@ -16,12 +16,18 @@ const newUserSchema = new mongoose.Schema(
     password: {
       required: true,
       type: String,
+      label: "password",
       min : 8
     },
     date: {
       type: Date,
       default: Date.now,
     },
+    imageURI:{
+      required: true,
+      type: String,
+      label: "profilePicture",
+    }
   },
   { collection: "users" }
 );

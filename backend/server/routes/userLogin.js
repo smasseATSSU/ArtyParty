@@ -12,9 +12,9 @@ router.post('/login', async (req, res) => {
   const { error } = userLoginValidation(req.body);
   if (error) return res.status(400).send({ message: error.errors[0].message });
 
-  const { username, password } = req.body
+  const { username, password } = req.body 
 
-  const user = await newUserModel.findOne({ username: username });
+  const user = await newUserModel.findOne({ username: username, profilePicture:profilePicture }); //this too
 
   //checks if the user exists
   if (!user)
@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
       .send({ message: "email or password does not exists, try again" });
 
   //create json web token if authenticated and send it back to client in header where it is stored in localStorage ( might not be best practice )
-  const accessToken = generateAccessToken(user._id, user.email, user.username, user.password)
+  const accessToken = generateAccessToken(user._id, user.email, user.username, user.password, user.profilePicture)//fix this for image
 
   res.header('Authorization', accessToken).send({ accessToken: accessToken })
 })

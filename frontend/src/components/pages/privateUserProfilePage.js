@@ -1,65 +1,119 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useNavigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 import getUserInfo from "../../utilities/decodeJwt";
-
-
-//link to service
-//http://localhost:8096/privateUserProfile
+import axios from "axios";
 
 const PrivateUserProfile = () => {
   const [show, setShow] = useState(false);
-  const [user, setUser] = useState({})
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const navigate = useNavigate();
-
-
-  // handle logout button
-  const handleLogout = (async) => {
-    localStorage.clear();
-    navigate("/");
-  };
+  const [user, setUser] = useState({});
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null); // State to store selected profile picture
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    setUser(getUserInfo())
+    setUser(getUserInfo());
   }, []);
 
+  const handleShow = () => {
+    setShow(true);
+    setPassword("");
+    setEmail("");
+    setProfilePicture(null);
+    setError("");
+  };
 
-  // 	<span><b>{<FollowerCount username = {username}/>}</b></span>&nbsp;
-  // <span><b>{<FollowingCount username = {username}/>}</b></span>;
-  if (!user) return (<div><h4>Log in to view this page.</h4></div>)
+  const handleClose = () => setShow(false);
+
+  const handleLogout = async () => {
+    localStorage.clear();
+    window.location.href = "/"; // Redirect to homepage
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("password", password);
+      formData.append("email", email);
+      formData.append("profilePicture", profilePicture); 
+
+      const response = await axios.put(
+        `http://localhost:8081/user/${user.id}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" }, // Set content type for file upload
+        }
+      );
+      // Update user state with new details
+      setUser(response.data);
+      setShow(false);
+    } catch (error) {
+      setError("Failed to update profile. Please try again.");
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  if (!user) return <div><h4>Log in to view this page.</h4></div>;
+
   return (
-    <div class="container">
-      <div class="col-md-12 text-center">
+    <div className="container">
+      <div className="col-md-12 text-center">
         <h1>{user && user.username}</h1>
-        <div class="col-md-12 text-center">
-          <>
-            <Button className="me-2" onClick={handleShow}>
-              Log Out
-            </Button>
-            <Modal
-              show={show}
-              onHide={handleClose}
-              backdrop="static"
-              keyboard={false}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Log Out</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>Are you sure you want to Log Out?</Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Close
-                </Button>
-                <Button variant="primary" onClick={handleLogout}>
-                  Yes
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </>
-        </div>
+        <img src={user.profilePicture} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
+        <p>Email: {user.email}</p>
+        {/* Additional user information can be displayed here */}
+        <Button className="me-2" onClick={handleShow}>
+          Edit Profile
+        </Button>
+        <Button onClick={handleLogout}>Log Out</Button>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Profile</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {error && <div className="alert alert-danger">{error}</div>}
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="password">
+                <Form.Label>New Password</Form.Label>
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Show Password"
+                  onClick={togglePasswordVisibility}
+                />
+              </Form.Group>
+              <Form.Group controlId="email">
+                <Form.Label>New Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="profilePicture">
+                <Form.Label>Upload Profile Picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => setProfilePicture(e.target.files[0])} // Set selected file as profile picture
+                />
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Save Changes
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
       </div>
     </div>
   );

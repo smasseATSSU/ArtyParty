@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const newUserModel = require('../models/userModel')
 const { newUserValidation } = require('../models/userValidator');
 const { generateAccessToken } = require('../utilities/generateToken');
+const profilePicture = req.files && req.files.profilePicture;
 
 router.post('/editUser', async (req, res) =>
 {

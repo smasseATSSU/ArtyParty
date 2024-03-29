@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Footer from '../Footer';
 import axios from 'axios';
-import PrivateUserProfile from './privateUserProfilePage'; // Import PrivateUserProfile component
+import PrivateUserProfile from './privateUserProfilePage';
 
 const Login = () => {
   const [data, setData] = useState({ username: '', password: '' });
@@ -34,44 +34,44 @@ const Login = () => {
     }
   };
 
+  const renderLoginForm = () => (
+    <div className="bg-white p-4 shadow rounded">
+      <h2 className="text-center mb-4">Login</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="username">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter username"
+            value={data.username}
+            onChange={(e) => setData({ ...data, username: e.target.value })}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Enter password"
+            value={data.password}
+            onChange={(e) => setData({ ...data, password: e.target.value })}
+          />
+        </Form.Group>
+        <div className="text-center">
+          <Button variant="primary" type="submit" className="w-100">
+            Login
+          </Button>
+        </div>
+      </Form>
+    </div>
+  );
+
   return (
     <div style={{ backgroundColor: bgColor, minHeight: '100vh', paddingBottom: '100px' }}>
       <Container className="py-5">
         <Row className="justify-content-center">
           <Col xs={12} md={6}>
-            {user ? ( // If user is logged in, render PrivateUserProfile component
-              <PrivateUserProfile />
-            ) : ( // Otherwise, render login form
-              <div className="bg-white p-4 shadow rounded">
-                <h2 className="text-center mb-4">Login</h2>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3" controlId="username">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter username"
-                      value={data.username}
-                      onChange={(e) => setData({ ...data, username: e.target.value })}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Enter password"
-                      value={data.password}
-                      onChange={(e) => setData({ ...data, password: e.target.value })}
-                    />
-                  </Form.Group>
-                  <div className="text-center">
-                    <Button variant="primary" type="submit" className="w-100">
-                      Login
-                    </Button>
-                  </div>
-                </Form>
-              </div>
-            )}
+            {user ? <PrivateUserProfile /> : renderLoginForm()}
           </Col>
         </Row>
       </Container>

@@ -57,15 +57,17 @@ const ArtistsPage = () => {
                     onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
                     onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
                   >
-                    <Button variant="primary" style={{ backgroundColor: '#f57f5b', borderColor: '#ffc7a1', borderRadius: '3', padding: '10px 30px', fontSize: '1.2rem', fontWeight: 'bold', textDecoration: 'none' }}>View Artist</Button>
+                    <Button variant="primary" style={{ backgroundColor: '#f57f5b', borderColor: '#ffc7a1', borderRadius: '3px', padding: '10px 30px', fontSize: '1.2rem', fontWeight: 'bold', textDecoration: 'none' }}>View Artist</Button>
                   </Link>
                 </Card.Body>
               </Card>
             </Col>
           ))}
         </Row>
+        <div style={{ height: '1in' }}></div>
+
       </Container>
-      <Footer />
+      <Footer style={{ backgroundColor: '#f8f9fa', padding: '20px' }} />
     </div>
   );
 };

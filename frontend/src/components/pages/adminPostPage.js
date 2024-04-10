@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Footer from '../Footer';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Container, Form, Button, Modal, Row, Col } from 'react-bootstrap';
 
 const AdminPage = () => {
   const [formData, setFormData] = useState({
     title: '',
-    artistName: '',
+    artistId: '',
     description: '',
     imageURI: ''
   });
+
+  const [artists, setArtists] = useState([]);
+  const [showCreateArtistModal, setShowCreateArtistModal] = useState(false);
+  const [newArtistName, setNewArtistName] = useState('');
+  const [newTown, setNewTown] = useState('');
+  const [newbiography, setNewbiography] = useState('');
+  const [newimageURI, setNewimageURI] = useState('');
+  const [newtypeOfArt, setNewtypeOfArt] = useState('');
+
+  useEffect(() => {
+    async function fetchArtists() {
+      try {
+        const response = await axios.get('http://localhost:8081/artists/artists');
+        setArtists(response.data);
+      } catch (error) {
+        console.error('Error fetching artists:', error);
+      }
+    }
+    fetchArtists();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,45 +40,107 @@ const AdminPage = () => {
     try {
       await axios.post('http://localhost:8081/art/artwork', formData);
       alert('Artwork record created successfully!');
-      setFormData({ title: '', artistName: '', description: '', imageURI: '' }); // Reset form fields after successful submission
+      setFormData({ title: '', artistId: '', description: '', imageURI: '' });
     } catch (error) {
       console.error('Error creating artwork:', error);
       alert('Error creating artwork. Please try again.');
     }
   };
 
-  return (
+  const handleCreateArtist = async () => {
+    try {
+      const response = await axios.post('http://localhost:8081/artists/artists', {
+        artistName: newArtistName,
+        Town: newTown,
+        biography: newbiography,
+        imageURI: newimageURI,
+        typeOfArt: newtypeOfArt
+      });
+      setArtists([...artists, response.data]);
+      setFormData({ ...formData, artistId: response.data._id });
+      setShowCreateArtistModal(false);
+      setNewArtistName('');
+      setNewTown('');
+      setNewbiography('');
+      setNewimageURI('');
+      setNewtypeOfArt('');
+    } catch (error) {
+      console.error('Error creating artist:', error);
+      alert('Error creating artist. Please try again.');
+    }
+  };
 
-    <Container>
-      <h2 className="mt-5 mb-4">Create Artwork Record</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="title">
-          <Form.Label>Title:</Form.Label>
-          <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="artistName">
-          <Form.Label>Artist Name:</Form.Label>
-          <Form.Control type="text" name="artistName" value={formData.artistName} onChange={handleChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="description">
-          <Form.Label>Description:</Form.Label>
-          <Form.Control as="textarea" rows={4} name="description" value={formData.description} onChange={handleChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="imageURI">
-          <Form.Label>Image URI:</Form.Label>
-          <Form.Control type="text" name="imageURI" value={formData.imageURI} onChange={handleChange} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="imageURI">
-          <Form.Label>artistId:</Form.Label>
-          <Form.Control type="text" name="artistId" value={formData.artistId} onChange={handleChange} />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-      <Footer style={{ position: 'fixed', bottom: '0', width: '100%' }} />
-    </Container>
-   
+  return (
+    <div style={{ backgroundColor: '#faca78'}}>
+      <Container>
+        <Row className="mt-5">
+          <Col md={6} className="mb-4">
+            <h2>Create Artwork Record</h2>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="title">
+                <Form.Label>Title:</Form.Label>
+                <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
+              </Form.Group>
+              <Form.Group controlId="artistId">
+                <Form.Label>Artist Name:</Form.Label>
+                <Form.Control as="select" name="artistId" value={formData.artistId} onChange={handleChange}>
+                  <option value="">Select an artist...</option>
+                  {artists.map((artist) => (
+                    <option key={artist._id} value={artist._id}>{artist.artistName}</option>
+                  ))}
+                </Form.Control>
+                <Button variant="link" className="mt-3" onClick={() => setShowCreateArtistModal(true)}>Create New Artist</Button>
+              </Form.Group>
+              <Form.Group controlId="description">
+                <Form.Label>Description:</Form.Label>
+                <Form.Control as="textarea" rows={4} name="description" value={formData.description} onChange={handleChange} />
+              </Form.Group>
+              <Form.Group controlId="imageURI">
+                <Form.Label>Image URI:</Form.Label>
+                <Form.Control type="text" name="imageURI" value={formData.imageURI} onChange={handleChange} />
+              </Form.Group>
+              <Button variant="primary" type="submit" className="mt-3">
+                Submit
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+
+      <Modal show={showCreateArtistModal} onHide={() => setShowCreateArtistModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create New Artist</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="newArtistName">
+            <Form.Label>Artist Name:</Form.Label>
+            <Form.Control type="text" value={newArtistName} onChange={(e) => setNewArtistName(e.target.value)} />
+          </Form.Group>
+          <Form.Group controlId="newTown">
+            <Form.Label>Town:</Form.Label>
+            <Form.Control type="text" value={newTown} onChange={(e) => setNewTown(e.target.value)} />
+          </Form.Group>
+          <Form.Group controlId="newbiography">
+            <Form.Label>Biography:</Form.Label>
+            <Form.Control type="text" value={newbiography} onChange={(e) => setNewbiography(e.target.value)} />
+          </Form.Group>
+          <Form.Group controlId="newimageURI">
+            <Form.Label>Image URI:</Form.Label>
+            <Form.Control type="text" value={newimageURI} onChange={(e) => setNewimageURI(e.target.value)} />
+          </Form.Group>
+          <Form.Group controlId="newtypeOfArt">
+            <Form.Label>Type of Art:</Form.Label>
+            <Form.Control type="text" value={newtypeOfArt} onChange={(e) => setNewtypeOfArt(e.target.value)} />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCreateArtistModal(false)}>Cancel</Button>
+          <Button variant="primary" onClick={handleCreateArtist}>Create</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Footer />
+    </div>
   );
 };
 

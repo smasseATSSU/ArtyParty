@@ -10,7 +10,6 @@ const PrivateUserProfile = () => {
   const [user, setUser] = useState({});
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [profilePicture, setProfilePicture] = useState(null); // State to store selected profile picture
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [error, setError] = useState("");
 
@@ -22,7 +21,6 @@ const PrivateUserProfile = () => {
     setShow(true);
     setPassword("");
     setEmail("");
-    setProfilePicture(null);
     setError("");
   };
 
@@ -39,7 +37,6 @@ const PrivateUserProfile = () => {
       const formData = new FormData();
       formData.append("password", password);
       formData.append("email", email);
-      formData.append("profilePicture", profilePicture); 
 
       const response = await axios.put(
         `http://localhost:8081/user/${user.id}`,
@@ -66,7 +63,6 @@ const PrivateUserProfile = () => {
     <div className="container">
       <div className="col-md-12 text-center">
         <h1>{user && user.username}</h1>
-        <img src={user.profilePicture} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
         <p>Email: {user.email}</p>
         {/* Additional user information can be displayed here */}
         <Button className="me-2" onClick={handleShow}>
@@ -99,13 +95,6 @@ const PrivateUserProfile = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group controlId="profilePicture">
-                <Form.Label>Upload Profile Picture</Form.Label>
-                <Form.Control
-                  type="file"
-                  onChange={(e) => setProfilePicture(e.target.files[0])} // Set selected file as profile picture
                 />
               </Form.Group>
               <Button variant="primary" type="submit">

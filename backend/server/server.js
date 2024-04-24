@@ -36,7 +36,8 @@ app.post('/artwork', async (req, res) => {
         title,
         artistName,
         description,
-        imageURI
+        imageURI,
+        artType
         // Add more fields as needed
       });
   

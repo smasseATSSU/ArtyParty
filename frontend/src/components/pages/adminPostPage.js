@@ -8,7 +8,8 @@ const AdminPage = () => {
     title: '',
     artistId: '',
     description: '',
-    imageURI: ''
+    imageURI: '',
+    artType: ''
   });
 
   const [artists, setArtists] = useState([]);
@@ -40,12 +41,13 @@ const AdminPage = () => {
     try {
       await axios.post('http://localhost:8081/art/artwork', formData);
       alert('Artwork record created successfully!');
-      setFormData({ title: '', artistId: '', description: '', imageURI: '' });
+      setFormData({ title: '', artistId: '', description: '', imageURI: '', artType: ''}); 
     } catch (error) {
       console.error('Error creating artwork:', error);
       alert('Error creating artwork. Please try again.');
     }
   };
+
 
   const handleCreateArtist = async () => {
     try {
@@ -77,10 +79,12 @@ const AdminPage = () => {
           <Col md={6} className="mb-4">
             <h2>Create Artwork Record</h2>
             <Form onSubmit={handleSubmit}>
+
               <Form.Group controlId="title">
                 <Form.Label>Title:</Form.Label>
                 <Form.Control type="text" name="title" value={formData.title} onChange={handleChange} />
               </Form.Group>
+
               <Form.Group controlId="artistId">
                 <Form.Label>Artist Name:</Form.Label>
                 <Form.Control as="select" name="artistId" value={formData.artistId} onChange={handleChange}>
@@ -91,14 +95,22 @@ const AdminPage = () => {
                 </Form.Control>
                 <Button variant="link" className="mt-3" onClick={() => setShowCreateArtistModal(true)}>Create New Artist</Button>
               </Form.Group>
+
               <Form.Group controlId="description">
                 <Form.Label>Description:</Form.Label>
                 <Form.Control as="textarea" rows={4} name="description" value={formData.description} onChange={handleChange} />
               </Form.Group>
+
+              <Form.Group controlId="artType">
+                <Form.Label>Art Type:</Form.Label>
+                <Form.Control type="text" name="artType" value={formData.artType} onChange={handleChange} />
+              </Form.Group>
+
               <Form.Group controlId="imageURI">
                 <Form.Label>Image URI:</Form.Label>
                 <Form.Control type="text" name="imageURI" value={formData.imageURI} onChange={handleChange} />
               </Form.Group>
+
               <Button variant="primary" type="submit" className="mt-3">
                 Submit
               </Button>

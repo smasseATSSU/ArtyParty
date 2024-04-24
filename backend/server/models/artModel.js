@@ -7,7 +7,7 @@ const artSchema = new mongoose.Schema({
   },
   artistName: {
     type: String,
-    required: true
+    required: false
   },
   artType: {
     type: String,
@@ -31,7 +31,7 @@ const artSchema = new mongoose.Schema({
   },
   artistId: {
     type: String,
-    required: false
+    required: true
   }
 });
 

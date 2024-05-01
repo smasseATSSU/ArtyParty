@@ -20,7 +20,9 @@ const LandingPage = () => {
     const fetchArtworks = async () => {
       try {
         const response = await axios.get('http://localhost:8081/art/artwork');
-        setArtworks(response.data);
+        // Shuffle artworks array
+        const shuffledArtworks = response.data.sort(() => Math.random() - 0.5);
+        setArtworks(shuffledArtworks);
       } catch (error) {
         console.error('Error fetching artworks:', error);
       }

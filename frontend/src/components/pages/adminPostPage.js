@@ -7,6 +7,7 @@ const AdminPage = () => {
   const [formData, setFormData] = useState({
     title: '',
     artistId: '',
+    artistName: '', 
     description: '',
     imageURI: '',
     artType: ''
@@ -35,19 +36,24 @@ const AdminPage = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8081/art/artwork', formData);
+      // Fetch artist's name based on selected artistId
+      const selectedArtist = artists.find(artist => artist._id === formData.artistId);
+      const artistName = selectedArtist ? selectedArtist.artistName : '';
+      
+      // Include artistName in formData
+      const updatedFormData = { ...formData, artistName };
+      
+      await axios.post('http://localhost:8081/art/artwork', updatedFormData);
       alert('Artwork record created successfully!');
-      setFormData({ title: '', artistId: '', description: '', imageURI: '', artType: ''}); 
+      setFormData({ title: '', artistId: '', artistName: '', description: '', imageURI: '', artType: '' }); 
     } catch (error) {
       console.error('Error creating artwork:', error);
       alert('Error creating artwork. Please try again.');
     }
   };
-
 
   const handleCreateArtist = async () => {
     try {

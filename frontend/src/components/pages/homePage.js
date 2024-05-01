@@ -48,7 +48,7 @@ const HomePage = () => {
   const shuffledLandingArtworks = shuffleArray(landingArtworks);
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', fontFamily: 'Times New Roman' }}> {/* Set font family to Times New Roman */}
+    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}> {/* Set font family to Times New Roman */}
       {/* Title Bar */}
       <div
         style={{

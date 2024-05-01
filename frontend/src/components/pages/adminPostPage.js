@@ -80,7 +80,7 @@ const AdminPage = () => {
 
   return (
     <div style={{ backgroundColor: '#faca78'}}>
-      <Container>
+         <h1> &nbsp;</h1>      <Container>
         <Row className="mt-5">
           <Col md={6} className="mb-4">
             <h2>Create Artwork Record</h2>

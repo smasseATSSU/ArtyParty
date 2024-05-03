@@ -24,7 +24,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8081/user/login', data);
+      const response = await axios.post('http://localhost:8081/login', data);
       const { accessToken } = response.data;
       localStorage.setItem('accessToken', accessToken);
       setUser(accessToken);

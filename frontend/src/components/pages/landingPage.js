@@ -130,9 +130,7 @@ const LandingPage = () => {
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="secondary" onClick={handleZoomToggle}>
-            {isZoomed ? 'Zoom Out' : 'Zoom In'}
-          </Button>
+          
         </Modal.Footer>
       </Modal>
     </div>

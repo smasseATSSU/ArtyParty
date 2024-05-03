@@ -10,7 +10,6 @@ export default function Navbar() {
     color: '#fff',
     fontSize: '1.2rem',
     fontWeight: 'normal', // Changed font weight to normal for a thinner font
-    fontFamily: 'Times New Roman', // Changed font family to Times New Roman
     marginLeft: '20px',
     textDecoration: 'none', // Remove default underline
     transition: 'text-decoration 0.3s', // Smooth transition for underline

@@ -64,15 +64,6 @@ export default function Navbar() {
         
         </Nav>
         <Nav>
-        <Nav.Link 
-            className="nav-link" 
-            style={linkStyle}
-            href="/privateUserProfile" 
-            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
-          >
-            Profile
-          </Nav.Link>
           
           <Nav.Link 
             className="nav-link" 

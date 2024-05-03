@@ -13,7 +13,6 @@ const Login = () => {
   const [data, setData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const [user, setUser] = useState(null);
-  const [bgColor, setBgColor] = useState('#f8f9fa');
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('accessToken');
@@ -35,11 +34,11 @@ const Login = () => {
   };
 
   const renderLoginForm = () => (
-    <div className="bg-white p-4 shadow rounded">
+    <div className="login-form">
       <h2 className="text-center mb-4">Login</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="username">
+        <Form.Group controlId="username">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
@@ -48,7 +47,7 @@ const Login = () => {
             onChange={(e) => setData({ ...data, username: e.target.value })}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
+        <Form.Group controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -67,15 +66,42 @@ const Login = () => {
   );
 
   return (
-    <div style={{ backgroundColor: bgColor, minHeight: '100vh', paddingBottom: '100px' }}>
-      <Container className="py-5">
-        <Row className="justify-content-center">
-          <Col xs={12} md={6}>
-            {user ? <PrivateUserProfile /> : renderLoginForm()}
-          </Col>
-        </Row>
-      </Container>
-      <Footer style={{ position: 'fixed', bottom: '0', width: '100%' }} />
+    <div>
+      {/* Title Bar */}
+      <div
+        style={{
+          position: 'relative',
+          backgroundImage: `url('https://artypartybucket.s3.amazonaws.com/gallery.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '300px',
+          color: '#fff',
+          textAlign: 'center',
+          textShadow: '80px 80px 40px rgba(0, 0, 0, 0.2)',
+          padding: '20px',
+        }}
+      >
+        <h1 style={{ 
+              fontSize: '3.5vw', 
+              textTransform: 'uppercase', 
+              letterSpacing: '2px', 
+              fontWeight: 'bold',
+              textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)' // Add drop shadow effect
+            }}>
+        {user ? <PrivateUserProfile /> : renderLoginForm()}
+      </h1>
+      </div>
+      <div className="login-page" style={{ backgroundColor: '#f8f9fa', minHeight: '50vh' }}>
+        <Container>
+          {/* Add rows of blank space */}
+          <Row className="justify-content-center align-items-center" style={{ height: '40vh' }}>
+            <Col>
+              {/* Empty rows */}
+            </Col>
+          </Row>
+        </Container>
+        <Footer />
+      </div>
     </div>
   );
 };
